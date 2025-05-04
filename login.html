@@ -1,0 +1,238 @@
+<!<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inscription Formateur</title>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="style1.css" />
+  </head>
+  <body>
+    <main class="connect">
+      <div class="body">
+        <div class="div">
+          <div class="div-2">
+            <header class="div-3">
+              <h1 class="text-wrapper">Inscription Formateur</h1>
+              <p class="p">Rejoignez notre équipe de formateurs professionnels</p>
+              <img
+                class="screenshot"
+                src="https://c.animaapp.com/m99myhweFKhCzu/img/screenshot-2025-03-12-201919-1.png"
+                alt="Logo"
+              />
+            </header>
+            <form class="div-4" action="mdps2.html" method="get">
+              <div class="div-5">
+                <div class="div-6">
+                  <div class="div-7">
+                    <label class="label" for="full-name">
+                      <span class="text-wrapper-2">Nom et Prénom</span>
+                    </label>
+                    <div class="overlap-group-wrapper">
+                      <div class="overlap-group">
+                        <input id="full-name" class="input" type="text" placeholder="Votre nom complet" required />
+                        <div class="frame">
+                          <img
+                            class="img"
+                            src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-4.svg"
+                            alt="User icon"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="div-8">
+                    <label class="label" for="email">
+                      <span class="text-wrapper-4">Email</span>
+                    </label>
+                    <div class="overlap-group-wrapper">
+                      <div class="overlap-group">
+                        <input id="email" class="input-2" placeholder="email@example.com" type="email" required />
+                        <div class="frame-wrapper">
+                          <img
+                            class="frame-2"
+                            src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-6.svg"
+                            alt="Email icon"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="div-9">
+                    <label class="label" for="expertise">
+                      <span class="domaine-d-expertise">Domaine d'expertise</span>
+                    </label>
+                    <div class="overlap-group-wrapper">
+                      <div class="overlap-group">
+                        <input id="expertise" class="input" type="text" placeholder="Votre domaine" required />
+                        <div class="img-wrapper">
+                          <img
+                            class="frame-3"
+                            src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-5.svg"
+                            alt="Expertise icon"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="div-wrapper">
+                  <div class="div-10">
+                    <label class="label" for="availability">
+                      <span class="text-wrapper-6">Disponibilité</span>
+                    </label>
+                    <div class="div-11">
+                      <div class="overlap-group-2">
+                        <textarea
+                          id="availability"
+                          class="textarea"
+                          placeholder="Jours et horaires disponibles"
+                          required
+                        ></textarea>
+                        <div class="frame-4">
+                          <img
+                            class="img"
+                            src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-9.svg"
+                            alt="Calendar icon"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="div-12">
+                <div class="div-13">
+                  <label class="label-2" for="experience">
+                    <span class="text-wrapper-8">Expérience professionnelle</span>
+                  </label>
+                  <div class="div-14">
+                    <div class="overlap-group-3">
+                      <textarea
+                        id="experience"
+                        class="textarea-2"
+                        placeholder="Décrivez votre expérience"
+                        required
+                      ></textarea>
+                      <div class="frame-5">
+                        <img
+                          class="frame-2"
+                          src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-7.svg"
+                          alt="Experience icon"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="div-15">
+                  <label class="label-2" for="diplomas">
+                    <span class="text-wrapper-10">Diplômes et Certifications</span>
+                  </label>
+                  <div class="div-14">
+                    <div class="overlap-group-3">
+                      <textarea
+                        id="diplomas"
+                        class="textarea-2"
+                        placeholder="Listez vos diplômes et certifications"
+                        required
+                      ></textarea>
+                      <div class="frame-5">
+                        <img
+                          class="frame-2"
+                          src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-2.svg"
+                          alt="Diploma icon"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="div-16">
+                <label class="label-2" for="file-upload">
+                  <span class="text-wrapper-12">Documents à fournir</span>
+                </label>
+                <div class="div-17">
+                  <div class="overlap-group-4">
+                    <div class="frame-6">
+                      <img
+                        class="frame-7"
+                        src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-3.svg"
+                        alt="Upload icon"
+                      />
+                    </div>
+                    <p class="text-wrapper-13">Glissez-déposez vos fichiers ici ou</p>
+                  </div>
+                  <button type="button" class="button" onclick="document.getElementById('file-upload').click()">
+                    <span class="text-wrapper-14">Parcourir les fichiers</span>
+                  </button>
+                  <input type="file" id="file-upload" style="display: none" multiple />
+                </div>
+              </div>
+              <div class="div-18">
+                <div class="div-7">
+                  <label class="label" for="linkedin">
+                    <span class="text-wrapper-15">Profil LinkedIn</span>
+                  </label>
+                  <div class="overlap-group-wrapper">
+                    <div class="overlap-group">
+                      <input
+                        id="linkedin"
+                        class="input-2"
+                        placeholder="https://www.linkedin.com/in/votreprofil"
+                        type="url"
+                      />
+                      <div class="frame">
+                        <img
+                          class="img"
+                          src="https://c.animaapp.com/m99myhweFKhCzu/img/frame.svg"
+                          alt="LinkedIn icon"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="div-19">
+                  <label class="label" for="portfolio">
+                    <span class="text-wrapper-16">Portfolio / Site Web</span>
+                  </label>
+                  <div class="overlap-group-wrapper">
+                    <div class="overlap-group">
+                      <input id="portfolio" class="input-2" placeholder="https://votreportfolio.com" type="url" />
+                      <div class="frame-wrapper">
+                        <img
+                          class="frame-2"
+                          src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-1.svg"
+                          alt="Website icon"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="button-wrapper">
+                <button type="submit" class="button-2">
+                  <div class="i">
+                    <div class="svg">
+                      <img
+                        class="frame-2"
+                        src="https://c.animaapp.com/m99myhweFKhCzu/img/frame-8.svg"
+                        alt="Submit icon"
+                      />
+                    </div>
+                  </div>
+                  <div class="span"><span class="soumettre-l">Soumettre l'inscription</span></div>
+                </button>
+              </div>
+            </form>
+          </div>
+          <img class="arrow-right" src="https://c.animaapp.com/m99myhweFKhCzu/img/arrow-right.svg" alt="Right arrow" />
+          <img
+            class="arrow-right-2"
+            src="https://c.animaapp.com/m99myhweFKhCzu/img/arrow-right-1.svg"
+            alt="Left arrow"
+          />
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Assistant Digital</title>
+  <style>body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .chat-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  #chat-box {
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  #user-input {
+    width: 70%;
+    padding: 8px;
+  }
+  
+  button {
+    padding: 8px 10px;
+  }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Posez une question..." />
+    <button onclick="sendMessage()">Envoyer</button>
+  </div>
+  <script >
+    function sendMessage() {
+  const input = document.getElementById("user-input");
+  const message = input.value.trim();
+  if (!message) return;
+
+  addMessage("Vous", message);
+  respondToMessage(message);
+  input.value = "";
+}
+
+function addMessage(sender, message) {
+  const chatBox = document.getElementById("chat-box");
+  const msgDiv = document.createElement("div");
+  msgDiv.textContent = `${sender} : ${message}`;
+  chatBox.appendChild(msgDiv);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function respondToMessage(message) {
+  let response = "Désolé, je n'ai pas compris.";
+
+  if (message.includes("bonjour")) {
+    response = "Bonjour ! Comment puis-je vous aider ?";
+  } else if (message.includes("heure")) {
+    response = `Il est ${new Date().toLocaleTimeString()}.`;
+  } else if (message.includes("nom")) {
+    response = "Je suis un assistant digital simple.";
+  }
+
+  setTimeout(() => {
+    addMessage("Assistant", response);
+  }, 500);
+}
+
+  </script>
+</body>
+</html>

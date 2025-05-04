@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Calendrier Éducatif</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .calendar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .calendar-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .calendar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .calendar-tools {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .calendar-tools button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .calendar-tools button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        #calendar {
+            padding: 20px;
+        }
+        
+        /* Personnalisation FullCalendar */
+        .fc-event {
+            border: none;
+            padding: 5px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .fc-event:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .fc-event.cours {
+            background: var(--primary);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .fc-event.devoir {
+            background: var(--warning);
+            border-left: 4px solid #d17a0e;
+        }
+        
+        .fc-event.examen {
+            background: var(--danger);
+            border-left: 4px solid #c41b5d;
+        }
+        
+        .fc-event.rendu {
+            background: var(--success);
+            border-left: 4px solid #3aa8c1;
+        }
+        
+        .fc-toolbar-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .fc-button {
+            background: var(--light) !important;
+            border: 1px solid #ddd !important;
+            color: var(--dark) !important;
+        }
+        
+        .fc-button-active {
+            background: var(--primary) !important;
+            color: white !important;
+        }
+        
+        .event-legend {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            padding: 10px;
+            background: var(--light);
+            border-top: 1px solid #eee;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <h2><i class="fas fa-calendar-alt"></i> Mon Calendrier Éducatif</h2>
+            <div class="calendar-tools">
+                <button id="today-btn"><i class="fas fa-calendar-day"></i> Aujourd'hui</button>
+                <button id="add-event-btn"><i class="fas fa-plus"></i> Ajouter</button>
+            </div>
+        </div>
+        
+        <div id="calendar"></div>
+        
+        <div class="event-legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--primary);"></div>
+                <span>Cours</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--warning);"></div>
+                <span>Devoirs</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--danger);"></div>
+                <span>Examens</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--success);"></div>
+                <span>Rendus</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/fr.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    
+    // Récupérer les événements du localStorage ou initialiser
+    let savedEvents = JSON.parse(localStorage.getItem('studentCalendarEvents')) || [];
+    
+    // Exemples d'événements si vide
+    if (savedEvents.length === 0) {
+        savedEvents = [
+            {
+                title: "Introduction au Web",
+                start: new Date(),
+                end: new Date(new Date().setHours(new Date().getHours() + 2)),
+                type: "cours",
+                course: "Développement Web",
+                professor: "Jean Dupont"
+            },
+            {
+                title: "Rendu Projet JS",
+                start: new Date(new Date().setDate(new Date().getDate() + 3)),
+                type: "rendu",
+                course: "JavaScript Avancé",
+                description: "Projet final - Application météo"
+            },
+            {
+                title: "Examen Partiel",
+                start: new Date(new Date().setDate(new Date().getDate() + 7)),
+                end: new Date(new Date().setDate(new Date().getDate() + 7)),
+                type: "examen",
+                course: "Algorithmique",
+                location: "Salle A12"
+            },
+            {
+                title: "Devoir Mathématiques",
+                start: new Date(new Date().setDate(new Date().getDate() + 5)),
+                type: "devoir",
+                course: "Maths Discrètes",
+                description: "Chapitres 3 et 4"
+            }
+        ];
+        localStorage.setItem('studentCalendarEvents', JSON.stringify(savedEvents));
+    }
+    
+    // Initialiser le calendrier
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'fr',
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        firstDay: 1, // Lundi comme premier jour
+        height: 650,
+        navLinks: true,
+        editable: true,
+        dayMaxEvents: true,
+        events: savedEvents,
+        eventContent: function(arg) {
+            // Icônes personnalisées selon le type
+            const iconMap = {
+                'cours': 'fa-chalkboard-teacher',
+                'devoir': 'fa-book',
+                'examen': 'fa-file-alt',
+                'rendu': 'fa-paper-plane'
+            };
+            
+            const icon = iconMap[arg.event.extendedProps.type] || 'fa-calendar';
+            
+            return {
+                html: `<i class="fas ${icon}"></i> ${arg.event.title}`
+            };
+        },
+        eventClassNames: function(arg) {
+            // Classes CSS selon le type
+            return [arg.event.extendedProps.type];
+        },
+        eventClick: function(info) {
+            // Afficher les détails de l'événement
+            showEventDetails(info.event);
+        },
+        dateClick: function(info) {
+            // Animation sur clic de date
+            animateDate(info.dateStr);
+        },
+        eventDrop: function(info) {
+            // Sauvegarder quand on déplace un événement
+            saveEvents();
+        },
+        eventResize: function(info) {
+            // Sauvegarder quand on redimensionne
+            saveEvents();
+        }
+    });
+    
+    calendar.render();
+    
+    // Bouton "Aujourd'hui"
+    document.getElementById('today-btn').addEventListener('click', function() {
+        calendar.today();
+        animateDate(new Date().toISOString().split('T')[0]);
+    });
+    
+    // Bouton "Ajouter"
+    document.getElementById('add-event-btn').addEventListener('click', function() {
+        openEventForm();
+    });
+    
+    // Fonction pour animer une date
+    function animateDate(dateStr) {
+        const dateEl = document.querySelector(`.fc-day[data-date="${dateStr}"]`);
+        if (dateEl) {
+            dateEl.classList.add('date-pulse');
+            setTimeout(() => {
+                dateEl.classList.remove('date-pulse');
+            }, 1000);
+        }
+    }
+    
+    // Fonction pour afficher les détails d'un événement
+    function showEventDetails(event) {
+        const props = event.extendedProps;
+        let details = `
+            <h3>${event.title}</h3>
+            <p><strong>Type:</strong> ${props.type}</p>
+            <p><strong>Date:</strong> ${event.start.toLocaleString('fr-FR')}</p>
+        `;
+        
+        if (props.course) details += `<p><strong>Cours:</strong> ${props.course}</p>`;
+        if (props.professor) details += `<p><strong>Professeur:</strong> ${props.professor}</p>`;
+        if (props.location) details += `<p><strong>Lieu:</strong> ${props.location}</p>`;
+        if (props.description) details += `<p><strong>Description:</strong> ${props.description}</p>`;
+        
+        // Boutons d'action
+        details += `
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button id="edit-event" data-id="${event.id}" style="padding: 8px 15px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-edit"></i> Modifier
+                </button>
+                <button id="delete-event" data-id="${event.id}" style="padding: 8px 15px; background: var(--danger); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+            </div>
+        `;
+        
+        // Afficher dans une modal (simplifié ici avec alert)
+        alert(details);
+    }
+    
+    // Fonction pour ouvrir le formulaire d'ajout
+    function openEventForm() {
+        // En production, utiliser une vraie modal
+        const eventData = prompt("Ajouter un nouvel événement (format: Titre|Type[cours,devoir,examen,rendu]|Date[YYYY-MM-DD]|Heure[HH:MM]|Description)");
+        
+        if (eventData) {
+            const parts = eventData.split('|');
+            if (parts.length >= 3) {
+                const newEvent = {
+                    title: parts[0],
+                    type: parts[1],
+                    start: parts[2] + (parts[3] ? 'T' + parts[3] : ''),
+                    extendedProps: {
+                        description: parts[4] || ''
+                    }
+                };
+                
+                calendar.addEvent(newEvent);
+                saveEvents();
+            }
+        }
+    }
+    
+    // Sauvegarder les événements
+    function saveEvents() {
+        const events = calendar.getEvents().map(event => {
+            return {
+                title: event.title,
+                start: event.start,
+                end: event.end,
+                type: event.extendedProps.type,
+                ...event.extendedProps
+            };
+        });
+        
+        localStorage.setItem('studentCalendarEvents', JSON.stringify(events));
+    }
+    
+    // Ajouter le style d'animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: none; }
+            50% { transform: scale(1.02); box-shadow: 0 0 10px rgba(67, 97, 238, 0.5); }
+            100% { transform: scale(1); box-shadow: none; }
+        }
+        .date-pulse {
+            animation: pulse 0.5s ease;
+        }
+        .fc-daygrid-day-frame:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+    `;
+    document.head.appendChild(style);
+});
+    </script>
+</body>
+</html>

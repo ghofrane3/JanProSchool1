@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function redirectToIndex() {
+            window.location.href = "index.html";
+        }
+        function redirectToLogin() {
+            if (document.getElementById("trainer").checked) {
+                window.location.href = "formateurlogin.html";
+            }
+        }
+        function redirectToConnect() {
+            if (document.getElementById("admin").checked) {
+                window.location.href = "connect3.html";
+            }
+        }
+    </script>
+    
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .login-container {
+            background-color: #a6d8ed(169, 200, 205);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+        
+        h1 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .role-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .role-option:hover {
+            background-color:#93afcf;
+            border-color: #b3d7ff;
+        }
+        
+        input[type="radio"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: #28a745;
+        }
+        
+        label {
+            cursor: pointer;
+            font-size: 16px;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        /* Style pour l'option sélectionnée */
+        .role-option.selected {
+            background-color: #e8f5e9;
+            border-color: #81c784;
+        }
+        
+        /* Animation légère pour le survol */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .role-option:hover {
+            animation: pulse 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Se connecter en tant que:</h1>
+        
+        <div class="role-option">
+            <div class="role-option">
+                <input type="radio" id="learner" name="role" value="learner">
+                <label for="learner" onclick="redirectToIndex()">Apprenant</label>
+            </div>
+            
+        </div>
+        
+        
+            <div class="role-option">
+                <input type="radio" id="trainer" name="role" value="trainer" onchange="redirectToLogin()">
+                <label for="trainer">Formateur</label>
+            </div>
+           
+        
+        
+        
+            <div class="role-option">
+                <input type="radio" id="admin" name="role" value="admin" onchange="redirectToConnect()">
+                <label for="admin">Administrateur</label>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script>
+        // Ajout d'une interaction pour mettre en évidence la sélection
+        document.querySelectorAll('.role-option').forEach(option => {
+            const radio = option.querySelector('input[type="radio"]');
+            
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.role-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                if (this.checked) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Initialisation de l'état sélectionné
+            if (radio.checked) {
+                option.classList.add('selected');
+            }
+        });
+    </script>
+</body>
+</html>

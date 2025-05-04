@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des Paiements | Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-500: #64748b;
+            --gray-700: #334155;
+            --card-bg: #ffffff;
+            --body-bg: #f1f5f9;
+            --text-color: #1e293b;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --light: #1e293b;
+            --gray-100: #1e293b;
+            --gray-200: #334155;
+            --gray-500: #94a3b8;
+            --gray-700: #e2e8f0;
+            --card-bg: #1e293b;
+            --body-bg: #0f172a;
+            --text-color: #f8fafc;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--gray-200);
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .theme-toggle {
+            background: var(--gray-100);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            margin-top: auto;
+            width: 100%;
+            color: var(--text-color);
+            margin-top: 2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .stat-icon.primary {
+            background-color: var(--primary);
+        }
+
+        .stat-icon.success {
+            background-color: var(--success);
+        }
+
+        .stat-icon.warning {
+            background-color: var(--warning);
+        }
+
+        .stat-icon.danger {
+            background-color: var(--danger);
+        }
+
+        /* Payment History Table */
+        .payment-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            background-color: var(--gray-100);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .search-input {
+            background-color: var(--gray-100);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            font-size: 0.875rem;
+            width: 200px;
+            color: var(--text-color);
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .payment-table thead th {
+            text-align: left;
+            padding: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .payment-table tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: background-color 0.2s ease;
+        }
+
+        .payment-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .payment-table tbody tr:hover {
+            background-color: var(--gray-100);
+        }
+
+        .payment-table td {
+            padding: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .payment-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background-color: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .payment-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .status-failed {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+
+        .action-btn:hover {
+            background-color: var(--gray-200);
+            color: var(--primary);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .pagination-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background-color: var(--gray-100);
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .pagination-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .pagination-btn:hover:not(.active) {
+            background-color: var(--gray-200);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .controls {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .payment-table thead {
+                display: none;
+            }
+
+            .payment-table tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+            }
+
+            .payment-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid var(--gray-200);
+            }
+
+            .payment-table td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--gray-500);
+                margin-right: 1rem;
+            }
+
+            .payment-table td:last-child {
+                border-bottom: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <span>FinDash</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="compte.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-history"></i>
+                    <span>Historique</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Statistiques</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Clients</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Paramètres</span>
+                </a>
+            </nav>
+
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode sombre</span>
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1 class="page-title">Historique des Paiements</h1>
+                <div class="user-profile">
+                    <div class="user-avatar">Nediya</div>
+                    <span>Nediya</span>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Revenus totaux</div>
+                            <div class="stat-value">TND24,580</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12% vs mois dernier</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon primary">
+                            <i class="fas fa-euro-sign"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Paiements réussis</div>
+                            <div class="stat-value">1,245</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>8% vs mois dernier</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Paiements en attente</div>
+                            <div class="stat-value">42</div>
+                            <div class="stat-change negative">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>3% vs mois dernier</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Paiements échoués</div>
+                            <div class="stat-value">18</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>5% vs mois dernier</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon danger">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment History -->
+            <section class="payment-section">
+                <div class="section-header">
+                    <h2 class="section-title">Dernières transactions</h2>
+                    <div class="controls">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="search-input" placeholder="Rechercher...">
+                        </div>
+                        <button class="filter-btn active">Tous</button>
+                        <button class="filter-btn">Complétés</button>
+                        <button class="filter-btn">En attente</button>
+                        <button class="filter-btn">Échoués</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction</th>
+                                <th>Client</th>
+                                <th>Méthode</th>
+                                <th>Date</th>
+                                <th>Montant</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Transaction">#TX-78945</td>
+                                <td data-label="Client">Ghofrane outay</td>
+                                <td data-label="Méthode">
+                                    <div class="payment-method">
+                                        <div class="payment-icon">
+                                            <i class="fab fa-cc-visa"></i>
+                                        </div>
+                                        <span>Visa •••• 4258</span>
+                                    </div>
+                                </td>
+                                <td data-label="Date">15 Juin 2023</td>
+                                <td data-label="Montant">TND125.00</td>
+                                <td data-label="Statut">
+                                    <span class="payment-status status-completed">Complété</span>
+                                </td>
+                                <td data-label="Actions">
+                                    <button class="action-btn" title="Voir les détails">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Transaction">#TX-78944</td>
+                                <td data-label="Client">Ghofrane outay</td>
+                                <td data-label="Méthode">
+                                    <div class="payment-method">
+                                        <div class="payment-icon">
+                                            <i class="fab fa-paypal"></i>
+                                        </div>
+                                        <span>PayPal</span>
+                                    </div>
+                                </td>
+                                <td data-label="Date">14 Juin 2023</td>
+                                <td data-label="Montant">TND89.99</td>
+                                <td data-label="Statut">
+                                    <span class="payment-status status-completed">Complété</span>
+                                </td>
+                                <td data-label="Actions">
+                                    <button class="action-btn" title="Voir les détails">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Transaction">#TX-78943</td>
+                                <td data-label="Client">Ghofrane outay</td>
+                                <td data-label="Méthode">
+                                    <div class="payment-method">
+                                        <div class="payment-icon">
+                                            <i class="fab fa-cc-mastercard"></i>
+                                        </div>
+                                        <span>Mastercard •••• 7821</span>
+                                    </div>
+                                </td>
+                                <td data-label="Date">14 Juin 2023</td>
+                                <td data-label="Montant">TND210.50</td>
+                                <td data-label="Statut">
+                                    <span class="payment-status status-pending">En attente</span>
+                                </td>
+                                <td data-label="Actions">
+                                    <button class="action-btn" title="Voir les détails">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Transaction">#TX-78942</td>
+                                <td data-label="Client">Ghofrane outay</td>
+                                <td data-label="Méthode">
+                                    <div class="payment-method">
+                                        <div class="payment-icon">
+                                            <i class="fas fa-university"></i>
+                                        </div>
+                                        <span>Virement bancaire</span>
+                                    </div>
+                                </td>
+                                <td data-label="Date">13 Juin 2023</td>
+                                <td data-label="Montant">TND450.00</td>
+                                <td data-label="Statut">
+                                    <span class="payment-status status-completed">Complété</span>
+                                </td>
+                                <td data-label="Actions">
+                                    <button class="action-btn" title="Voir les détails">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Transaction">#TX-78941</td>
+                                <td data-label="Client">Ghofrane outay</td>
+                                <td data-label="Méthode">
+                                    <div class="payment-method">
+                                        <div class="payment-icon">
+                                            <i class="fab fa-cc-apple-pay"></i>
+                                        </div>
+                                        <span>Apple Pay</span>
+                                    </div>
+                                </td>
+                                <td data-label="Date">12 Juin 2023</td>
+                                <td data-label="Montant">TND75.30</td>
+                                <td data-label="Statut">
+                                    <span class="payment-status status-failed">Échoué</span>
+                                </td>
+                                <td data-label="Actions">
+                                    <button class="action-btn" title="Voir les détails">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Transaction">#TX-78940</td>
+                                <td data-label="Client">Ghofrane outay</td>
+                                <td data-label="Méthode">
+                                    <div class="payment-method">
+                                        <div class="payment-icon">
+                                            <i class="fab fa-cc-stripe"></i>
+                                        </div>
+                                        <span>Stripe</span>
+                                    </div>
+                                </td>
+                                <td data-label="Date">11 Juin 2023</td>
+                                <td data-label="Montant">TND320.00</td>
+                                <td data-label="Statut">
+                                    <span class="payment-status status-completed">Complété</span>
+                                </td>
+                                <td data-label="Actions">
+                                    <button class="action-btn" title="Voir les détails">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button class="pagination-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Dark/Light mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        let isDarkMode = false;
+
+        // Check for saved theme preference or use preferred color scheme
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            enableDarkMode();
+        }
+
+        themeToggle.addEventListener('click', () => {
+            isDarkMode ? disableDarkMode() : enableDarkMode();
+        });
+
+        function enableDarkMode() {
+            body.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Mode clair</span>';
+            isDarkMode = true;
+            localStorage.setItem('theme', 'dark');
+        }
+
+        function disableDarkMode() {
+            body.removeAttribute('data-theme');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Mode sombre</span>';
+            isDarkMode = false;
+            localStorage.setItem('theme', 'light');
+        }
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Here you would filter the table rows based on the selected filter
+                // For a real implementation, you would need to add data attributes to rows
+                // and show/hide based on the filter
+                console.log(`Filter by: ${button.textContent}`);
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        
+        searchInput.addEventListener('input', () => {
+            // Here you would filter the table rows based on the search term
+            // For a real implementation, you would search through all columns
+            console.log(`Search for: ${searchInput.value}`);
+        });
+
+        // Pagination functionality
+        const paginationButtons = document.querySelectorAll('.pagination-btn');
+        
+        paginationButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.classList.contains('active')) return;
+                
+                // Update active pagination button
+                document.querySelector('.pagination-btn.active').classList.remove('active');
+                button.classList.add('active');
+                
+                // Here you would load the corresponding page of results
+                console.log(`Go to page: ${button.textContent}`);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Hub Connect - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS sera placé dans un fichier séparé dans la version finale */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #4895ef;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            
+            --radius: 8px;
+            --radius-sm: 4px;
+        }
+        
+        [data-theme="dark"] {
+            --light: #212529;
+            --dark: #f8f9fa;
+            --gray-light: #343a40;
+            --gray: #adb5bd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+        
+        /* Votre CSS ici... */
+    </style>
+    <style>
+        /* Variables et reset */
+:root {
+    --primary: #4361ee;
+    --primary-dark: #3a0ca3;
+    --secondary: #4895ef;
+    --success: #4cc9f0;
+    --danger: #f72585;
+    --warning: #f8961e;
+    --info: #3a86ff;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #6c757d;
+    --gray-light: #e9ecef;
+    --gray-dark: #343a40;
+    
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --shadow-inset: inset 0 2px 4px 0 rgba(0,0,0,0.06);
+    
+    --radius: 8px;
+    --radius-sm: 4px;
+    
+    --transition: all 0.3s ease;
+}
+
+[data-theme="dark"] {
+    --light: #212529;
+    --dark: #f8f9fa;
+    --gray-light: #343a40;
+    --gray: #adb5bd;
+    --gray-dark: #e9ecef;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    transition: var(--transition);
+}
+
+/* Layout */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 280px;
+    background-color: white;
+    border-right: 1px solid var(--gray-light);
+    transition: var(--transition);
+}
+
+.admin-content {
+    flex: 1;
+    padding: 2rem;
+    background-color: var(--gray-light);
+    transition: var(--transition);
+}
+
+/* Sidebar */
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.sidebar-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    color: var(--primary);
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav li {
+    margin: 0.25rem 0;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: var(--gray);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.sidebar-nav a:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary);
+}
+
+.sidebar-nav a i {
+    width: 24px;
+    text-align: center;
+}
+
+.sidebar-nav .active a {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary);
+    border-left: 3px solid var(--primary);
+}
+
+.sidebar-nav .logout a {
+    color: var(--danger);
+}
+
+.sidebar-nav .logout a:hover {
+    background-color: rgba(247, 37, 133, 0.1);
+}
+
+/* Content Header */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.content-header h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition);
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.stat-card.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.stat-info h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stat-info p {
+    color: var(--gray);
+    font-size: 0.875rem;
+}
+
+.stat-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    margin-top: 0.25rem;
+}
+
+.stat-badge.success {
+    background-color: rgba(76, 201, 240, 0.1);
+    color: var(--success);
+}
+
+.stat-badge.warning {
+    background-color: rgba(248, 150, 30, 0.1);
+    color: var(--warning);
+}
+
+/* Content Sections */
+.content-section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.view-all {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Tables */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+}
+
+.data-table thead {
+    background-color: var(--gray-light);
+}
+
+.data-table th {
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray);
+}
+
+.data-table tbody tr {
+    border-top: 1px solid var(--gray-light);
+    transition: var(--transition);
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(67, 97, 238, 0.05);
+    cursor: pointer;
+}
+
+/* User Info */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge-learner {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary);
+}
+
+.badge-instructor {
+    background-color: rgba(42, 157, 143, 0.1);
+    color: #2a9d8f;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #3f7bc2;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.btn-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+/* Grid Layout */
+.grid-2-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Cards */
+.card {
+    background-color: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.card-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--gray-light);
+    text-align: right;
+}
+
+/* Action List */
+.action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.action-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.action-item:hover {
+    background-color: var(--gray-light);
+}
+
+.action-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.action-icon.warning {
+    background-color: rgba(248, 150, 30, 0.1);
+    color: var(--warning);
+}
+
+.action-icon.danger {
+    background-color: rgba(247, 37, 133, 0.1);
+    color: var(--danger);
+}
+
+.action-icon.info {
+    background-color: rgba(58, 134, 255, 0.1);
+    color: var(--info);
+}
+
+.action-icon.secondary {
+    background-color: rgba(72, 149, 239, 0.1);
+    color: var(--secondary);
+}
+
+.action-content {
+    flex: 1;
+}
+
+.action-content h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.action-content p {
+    font-size: 0.75rem;
+    color: var(--gray);
+}
+
+/* Progress Bar */
+.progress-container {
+    width: 100%;
+    background-color: var(--gray-light);
+    border-radius: var(--radius-sm);
+    height: 6px;
+    position: relative;
+    margin: 0.5rem 0;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: var(--radius-sm);
+    background-color: var(--primary);
+    position: relative;
+}
+
+.progress-container span {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    font-size: 0.75rem;
+    color: var(--gray);
+}
+
+/* Rating */
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.rating span {
+    color: var(--dark);
+    margin-right: 0.25rem;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--dark);
+    font-size: 1.25rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.theme-toggle:hover {
+    background-color: var(--gray-light);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .admin-sidebar {
+        width: 80px;
+    }
+    
+    .sidebar-header span,
+    .sidebar-nav span {
+        display: none;
+    }
+    
+    .sidebar-header {
+        justify-content: center;
+        padding: 1rem;
+    }
+    
+    .sidebar-nav a {
+        justify-content: center;
+        padding: 0.75rem;
+    }
+    
+    .sidebar-nav .active a {
+        border-left: none;
+        border-radius: var(--radius);
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+    
+    .admin-sidebar {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+        border-right: none;
+        border-top: 1px solid var(--gray-light);
+    }
+    
+    .sidebar-nav ul {
+        display: flex;
+        overflow-x: auto;
+        padding: 0.5rem;
+    }
+    
+    .sidebar-nav li {
+        margin: 0;
+    }
+    
+    .admin-content {
+        padding-bottom: 80px;
+    }
+    
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .header-actions {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+    
+    .grid-2-col {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h1>
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Jan Pro School</span>
+                </h1>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Tableau de bord</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-users"></i>
+                            <span>Utilisateurs</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="courses.html">
+                            <i class="fas fa-book"></i>
+                            <span>Cours</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="listeformateur.html">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span>Formateurs</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="compte.html">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Apprenants</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Paiements</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Rapports</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Paramètres</span>
+                        </a>
+                    </li>
+                    <li class="logout">
+                        <a href="first page (1).html">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Déconnexion</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <header class="content-header">
+                <h2>Tableau de bord Administrateur</h2>
+                <div class="header-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Ajouter un utilisateur
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-file-export"></i> Générer un rapport
+                    </button>
+                    <button class="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e3f2fd;">
+                        <i class="fas fa-user-graduate" style="color: var(--primary);"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>148</h3>
+                        <p>Apprenants</p>
+                        <span class="stat-badge success">1:26 actifs</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e8f5e9;">
+                        <i class="fas fa-chalkboard-teacher" style="color: #2e7d32;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>12</h3>
+                        <p>Formateurs</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #fff8e1;">
+                        <i class="fas fa-book" style="color: #ff8f00;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>Cours</p>
+                        <span class="stat-badge warning">2 à venir</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #f3e5f5;">
+                        <i class="fas fa-money-bill-wave" style="color: #7b1fa2;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>12 580,00 TND </h3>
+                        <p>Revenu ce mois</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Registrations -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h3>Inscriptions récentes</h3>
+                    <a href="#" class="view-all">Voir tous les utilisateurs <i class="fas fa-chevron-right"></i></a>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Email</th>
+                                <th>Rôle</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="ghofrane.jpg" alt="Ghofrane outay" class="user-avatar">
+                                        <span>ghofrane outay</span>
+                                    </div>
+                                </td>
+                                <td>ghofraneoutay@example.com</td>
+                                <td><span class="badge badge-learner">Apprenant</span></td>
+                                <td>19 avr. 10:15</td>
+                                <td><a href="#" class="btn-link">Détails</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="linda.jpeg.png" alt="linda laamaimi" class="user-avatar">
+                                        <span>linda laamaimi</span>
+                                    </div>
+                                </td>
+                                <td>lindaamaimi@example.com</td>
+                                <td><span class="badge badge-learner">Apprenant</span></td>
+                                <td>18 avr. 14:22</td>
+                                <td><a href="#" class="btn-link">Détails</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://i.pravatar.cc/40?img=3" alt="Med taher othmen" class="user-avatar">
+                                        <span>Med taher othmen</span>
+                                    </div>
+                                </td>
+                                <td>medtaherothmen@example.com</td>
+                                <td><span class="badge badge-instructor">Formateur</span></td>
+                                <td>17 avr. 09:45</td>
+                                <td><a href="#" class="btn-link">Détails</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="zayneb.png" alt="zayneb ben achour" class="user-avatar">
+                                        <span>Zayneb ben achour</span>
+                                    </div>
+                                </td>
+                                <td>zaynebbenachour@example.com</td>
+                                <td><span class="badge badge-learner">Apprenant</span></td>
+                                <td>17 avr. 08:30</td>
+                                <td><a href="#" class="btn-link">Détails</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="salsabil.jpg" alt="Salsabil boussama" class="user-avatar">
+                                        <span>salsabil boussama</span>
+                                    </div>
+                                </td>
+                                <td>salsabilboussamat@example.com</td>
+                                <td><span class="badge badge-learner">Apprenant</span></td>
+                                <td>16 avr. 16:15</td>
+                                <td><a href="#" class="btn-link">Détails</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Performance & Payments -->
+            <div class="content-section">
+                <div class="grid-2-col">
+                    <!-- Course Performance -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Performance des cours</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cours</th>
+                                        <th>Apprenants</th>
+                                        <th>Taux d'achèvement</th>
+                                        <th>Revenus</th>
+                                        <th>Évaluation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Introduction au Développement Web</td>
+                                        <td>24</td>
+                                        <td>
+                                            <div class="progress-container">
+                                                <div class="progress-bar" style="width: 75%"></div>
+                                                <span>75%</span>
+                                            </div>
+                                        </td>
+                                        <td>2 376,00 TND</td>
+                                        <td>
+                                            <div class="rating">
+                                                <span>4.8</span>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Marketing Digital Avancé</td>
+                                        <td>18</td>
+                                        <td>
+                                            <div class="progress-container">
+                                                <div class="progress-bar" style="width: 60%"></div>
+                                                <span>60%</span>
+                                            </div>
+                                        </td>
+                                        <td>2 322,00 TND</td>
+                                        <td>
+                                            <div class="rating">
+                                                <span>4.6</span>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>React pour Débutants</td>
+                                        <td>22</td>
+                                        <td>
+                                            <div class="progress-container">
+                                                <div class="progress-bar" style="width: 45%"></div>
+                                                <span>45%</span>
+                                            </div>
+                                        </td>
+                                        <td>3 278,00 TND</td>
+                                        <td>
+                                            <div class="rating">
+                                                <span>4.7</span>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Design UX/UI Fondamentaux</td>
+                                        <td>16</td>
+                                        <td>
+                                            <div class="progress-container">
+                                                <div class="progress-bar" style="width: 80%"></div>
+                                                <span>80%</span>
+                                            </div>
+                                        </td>
+                                        <td>1 904,00 TND</td>
+                                        <td>
+                                            <div class="rating">
+                                                <span>4.9</span>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Pending Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Actions en attente</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="action-list">
+                                <div class="action-item">
+                                    <div class="action-icon warning">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h4>Approbations formateurs</h4>
+                                        <p>3 en attente</p>
+                                    </div>
+                                    <button class="btn btn-sm">Vérifier</button>
+                                </div>
+                                
+                                <div class="action-item">
+                                    <div class="action-icon danger">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h4>Paiements échoués</h4>
+                                        <p>2 à traiter</p>
+                                    </div>
+                                    <button class="btn btn-sm">Vérifier</button>
+                                </div>
+                                
+                                <div class="action-item">
+                                    <div class="action-icon info">
+                                        <i class="fas fa-upload"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h4>Cours à publier</h4>
+                                        <p>1 en attente</p>
+                                    </div>
+                                    <button class="btn btn-sm">Vérifier</button>
+                                </div>
+                                
+                                <div class="action-item">
+                                    <div class="action-icon secondary">
+                                        <i class="fas fa-ticket-alt"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h4>Support tickets</h4>
+                                        <p>3 non assignés</p>
+                                    </div>
+                                    <button class="btn btn-sm">Vérifier</button>
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer">
+                                <a href="#" class="btn-link">Rapport financier détaillé <i class="fas fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // JavaScript sera placé dans un fichier séparé dans la version finale
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme toggle
+            const themeToggle = document.querySelector('.theme-toggle');
+            const html = document.documentElement;
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            
+            // Update icon
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+            
+            function updateThemeIcon(theme) {
+                const icon = themeToggle.querySelector('i');
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            
+            // Simulate data loading
+            setTimeout(() => {
+                document.querySelectorAll('.stat-card').forEach(card => {
+                    card.classList.add('loaded');
+                });
+            }, 500);
+            
+            // Table row click
+            document.querySelectorAll('.data-table tbody tr').forEach(row => {
+                row.addEventListener('click', function(e) {
+                    if (!e.target.closest('a')) {
+                        console.log('View details for:', this.querySelector('td').textContent);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

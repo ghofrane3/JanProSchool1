@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jan Pro School - Cours</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header h2 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            color: #ecf0f1;
+        }
+        
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .category-link {
+            padding: 10px 20px;
+            background-color: white;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .category-link:hover {
+            background-color: #2c3e50;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .category-link i {
+            font-size: 1.2rem;
+        }
+        
+        .search-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .search-container p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .search-box {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .search-box input {
+            width: 100%;
+            max-width: 600px;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            border-color: #2c3e50;
+            box-shadow: 0 0 10px rgba(44, 62, 80, 0.2);
+        }
+        
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #2c3e50, transparent);
+            margin: 30px 0;
+        }
+        
+        .courses-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .courses-section h3 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .course-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .course-item {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .course-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-image {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .course-item:hover .course-image img {
+            transform: scale(1.05);
+        }
+        
+        .course-content {
+            padding: 20px;
+        }
+        
+        .course-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .course-desc {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #7f8c8d;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .course-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .course-link:hover {
+            background-color: #1a252f;
+        }
+        
+        /* Badges pour catégories */
+        .course-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            header h2 {
+                font-size: 1.2rem;
+            }
+            
+            .course-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-nav {
+                gap: 10px;
+            }
+            
+            .category-link {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>COURSES</h1>
+            <h2>bonjour !</h2>
+        </header>
+        
+        <nav class="category-nav">
+            <a href="#dev" class="category-link">
+                <i class="fas fa-code"></i> Développement
+            </a>
+            <a href="#design" class="category-link">
+                <i class="fas fa-paint-brush"></i> Design
+            </a>
+            <a href="#photo" class="category-link">
+                <i class="fas fa-camera"></i> Photographie
+            </a>
+            <a href="#langues" class="category-link">
+                <i class="fas fa-language"></i> Langues
+            </a>
+        </nav>
+        
+        <div class="search-container">
+            <p>Que veux-tu apprendre?</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="courses-section">
+            <h3 id="dev">Développement</h3>
+            <ul class="course-list" id="courseList">
+                <li class="course-item">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Développement Web">
+                        <span class="course-category">Dev</span>
+                    </div>
+                    <div class="course-content">
+                        <h4 class="course-title">Développement Web Fullstack</h4>
+                        <p class="course-desc">Maîtrisez HTML, CSS, JavaScript et Node.js pour créer des applications web complètes.</p>
+                        <div class="course-meta">
+                            <span><i class="far fa-clock"></i> 120h</span>
+                            <span><i class="fas fa-user-graduate"></i> Avancé</span>
+                        </div>
+                        <a href="#" class="course-link">Commencer le cours</a>
+                        
+     
+
+                    </div>
+                </li>
+                <li class="course-item">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Mobile Development">
+                        <span class="course-category">Dev</span>
+                    </div>
+                    <div class="course-content">
+                        <h4 class="course-title">Développement Mobile</h4>
+                        <p class="course-desc">Créez des applications iOS et Android avec React Native et Flutter.</p>
+                        <div class="course-meta">
+                            <span><i class="far fa-clock"></i> 90h</span>
+                            <span><i class="fas fa-user-graduate"></i> Intermédiaire</span>
+                        </div>
+                        <a href="formation.html" 
+   class="course-link" 
+   target="_blank">
+   Commencer le cours
+</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="courses-section">
+            <h3 id="design">Design</h3>
+            <ul class="course-list">
+                <li class="course-item">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="UI/UX Design">
+                        <span class="course-category">Design</span>
+                    </div>
+                    <div class="course-content">
+                        <h4 class="course-title">UI/UX Design</h4>
+                        <p class="course-desc">Apprenez à concevoir des interfaces utilisateur intuitives et esthétiques.</p>
+                        <div class="course-meta">
+                            <span><i class="far fa-clock"></i> 80h</span>
+                            <span><i class="fas fa-user-graduate"></i> Débutant</span>
+                        </div>
+                        <a href="#" class="course-link">Commencer le cours</a>
+                    </div>
+                </li>
+                <li class="course-item">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Graphic Design">
+                        <span class="course-category">Design</span>
+                    </div>
+                    <div class="course-content">
+                        <h4 class="course-title">Design Graphique</h4>
+                        <p class="course-desc">Maîtrisez Photoshop, Illustrator et les fondamentaux du design.</p>
+                        <div class="course-meta">
+                            <span><i class="far fa-clock"></i> 60h</span>
+                            <span><i class="fas fa-user-graduate"></i> Tous niveaux</span>
+                        </div>
+                        <a href="#" class="course-link">Commencer le cours</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="courses-section">
+            <h3 id="photo">Photographie</h3>
+            <ul class="course-list">
+                <li class="course-item">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Photographie de base">
+                        <span class="course-category">Photo</span>
+                    </div>
+                    <div class="course-content">
+                        <h4 class="course-title">Photographie Fondamentale</h4>
+                        <p class="course-desc">Apprenez les bases de la composition, exposition et éclairage.</p>
+                        <div class="course-meta">
+                            <span><i class="far fa-clock"></i> 40h</span>
+                            <span><i class="fas fa-user-graduate"></i> Débutant</span>
+                        </div>
+                        <a href="#" class="course-link">Commencer le cours</a>
+                    </div>
+                </li>
+                <li class="course-item">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Retouche Photo">
+                        <span class="course-category">Photo</span>
+                    </div>
+                    <div class="course-content">
+                        <h4 class="course-title">Retouche Photo avec Photoshop</h4>
+                        <p class="course-desc">Techniques professionnelles de retouche et post-traitement.</p>
+                        <div class="course-meta">
+                            <span><i class="far fa-clock"></i> 50h</span>
+                            <span><i class="fas fa-user-graduate"></i> Intermédiaire</span>
+                        </div>
+                        <a href="#" class="course-link">Commencer le cours</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript pour la fonctionnalité de recherche
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const courses = document.querySelectorAll('.course-item');
+            
+            courses.forEach(course => {
+                const title = course.querySelector('.course-title').textContent.toLowerCase();
+                const desc = course.querySelector('.course-desc').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                    course.style.display = 'block';
+                } else {
+                    course.style.display = 'none';
+                }
+            });
+        });
+
+        // Animation douce pour les ancres
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

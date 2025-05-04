@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion utilisateur</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <form action="login.php" method="POST">
+      <div class="logo">
+        <img src="logo.png" alt="Logo JPS">
+      </div>
+      <h2>Se connecter en tant que Administrateur</h2>
+      <input type="email" name="email" placeholder="Adresse e-mail" required>
+      <input type="password" name="password" placeholder="Mot de passe" required>
+      <a href="#" class="forgot-password">Mot de passe oublié</a>
+      
+      <!-- Lien vers courses.html lorsque le bouton Sign In est cliqué -->
+      <a href="compteA.html"><button type="button">Sign In</button></a>
+
+      <p class="signup-text">Pas encore de compte? 
+        <!-- Lien vers desktop.html lorsque l'utilisateur clique sur Inscrivez-vous -->
+        <a href="desktop23.html">inscrivez-vous</a>
+      </p>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

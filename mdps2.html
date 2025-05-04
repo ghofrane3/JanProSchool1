@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mdps</title>
+    <style>
+        /* style.css - Ajouts pour la page de mot de passe */
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 1.5em;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.password-requirements {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.password-requirements ul {
+    margin: 5px 0 0 20px;
+    padding: 0;
+}
+
+.password-requirements li {
+    color: #e74c3c;
+}
+
+.password-requirements li.valid {
+    color: #2ecc71;
+}
+
+.validation-message {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.8em;
+}
+
+.valid {
+    color: #2ecc71;
+}
+
+.invalid {
+    color: #e74c3c;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+.button:hover {
+    background-color: #2980b9;
+}
+
+.button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.submit-btn:hover {
+    background-color: #2980b9;
+}
+
+.submit-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Création de votre mot de passe</h1>
+        <form id="passwordForm" action="succée2.html" method="POST">
+            <input type="hidden" name="email" value="">
+            
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="password" required minlength="8">
+                <div class="password-requirements">
+                    <p>Le mot de passe doit contenir :</p>
+                    <ul>
+                        <li id="req-length">Au moins 8 caractères</li>
+                        <li id="req-upper">Une lettre majuscule</li>
+                        <li id="req-number">Un chiffre</li>
+                        <li id="req-special">Un caractère spécial</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">Confirmer le mot de passe :</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <span id="passwordMatch" class="validation-message"></span>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="button">Finaliser l'inscription</button>
+              </div>
+        </form>
+    </div>
+    <script >
+        document.addEventListener('DOMContentLoaded', function() {
+    const passwordForm = document.getElementById('passwordForm');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+    const passwordMatchMessage = document.getElementById('passwordMatch');
+    const finalizeButton = document.querySelector('.button');
+    
+    // Éléments des exigences de mot de passe
+    const reqLength = document.getElementById('req-length');
+    const reqUpper = document.getElementById('req-upper');
+    const reqNumber = document.getElementById('req-number');
+    const reqSpecial = document.getElementById('req-special');
+    
+    // Écouteurs d'événements
+    passwordInput.addEventListener('input', validatePassword);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+    finalizeButton.addEventListener('click', handleFinalize);
+    
+    // Valider le mot de passe selon les critères
+    function validatePassword() {
+        const password = passwordInput.value;
+        let isValid = true;
+        
+        // Vérifier la longueur
+        if (password.length >= 8) {
+            reqLength.classList.add('valid');
+            reqLength.classList.remove('invalid');
+        } else {
+            reqLength.classList.add('invalid');
+            reqLength.classList.remove('valid');
+            isValid = false;
+        }
+        
+        // Vérifier les majuscules
+        if (/[A-Z]/.test(password)) {
+            reqUpper.classList.add('valid');
+            reqUpper.classList.remove('invalid');
+        } else {
+            reqUpper.classList.add('invalid');
+            reqUpper.classList.remove('valid');
+            isValid = false;
+        }
+        
+        // Vérifier les chiffres
+        if (/\d/.test(password)) {
+            reqNumber.classList.add('valid');
+            reqNumber.classList.remove('invalid');
+        } else {
+            reqNumber.classList.add('invalid');
+            reqNumber.classList.remove('valid');
+            isValid = false;
+        }
+        
+        // Vérifier les caractères spéciaux
+        if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            reqSpecial.classList.add('valid');
+            reqSpecial.classList.remove('invalid');
+        } else {
+            reqSpecial.classList.add('invalid');
+            reqSpecial.classList.remove('valid');
+            isValid = false;
+        }
+        
+        // Vérifier la correspondance si le champ de confirmation n'est pas vide
+        if (confirmPasswordInput.value !== '') {
+            checkPasswordMatch();
+        }
+        
+        return isValid;
+    }
+    
+    // Vérifier que les mots de passe correspondent
+    function checkPasswordMatch() {
+        if (passwordInput.value === confirmPasswordInput.value) {
+            passwordMatchMessage.textContent = 'Les mots de passe correspondent';
+            passwordMatchMessage.classList.add('valid');
+            passwordMatchMessage.classList.remove('invalid');
+            return true;
+        } else {
+            passwordMatchMessage.textContent = 'Les mots de passe ne correspondent pas';
+            passwordMatchMessage.classList.add('invalid');
+            passwordMatchMessage.classList.remove('valid');
+            return false;
+        }
+    }
+    
+    // Gérer la finalisation de l'inscription
+    function handleFinalize(e) {
+        e.preventDefault();
+        
+        const isPasswordValid = validatePassword();
+        const doPasswordsMatch = checkPasswordMatch();
+        
+        if (isPasswordValid && doPasswordsMatch) {
+            // Soumettre le formulaire si tout est valide
+            passwordForm.submit();
+            
+            // Pour l'exemple, nous redirigeons directement
+            // En production, utilisez la soumission du formulaire ou une requête AJAX
+            window.location.href = 'succée2.html';
+        } else {
+            // Afficher un message d'erreur général
+            alert('Veuillez corriger les erreurs dans le formulaire avant de continuer.');
+        }
+    }
+    
+    // Initialiser la validation au chargement
+    validatePassword();
+    checkPasswordMatch();
+});
+    </script>
+</body>
+</html>

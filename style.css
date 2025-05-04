@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #e6f3f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .login-container {
+    background: #d8f0fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border: 1px solid #aaa;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+  }
+  
+  .logo {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .logo img {
+    height: 40px;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    color: #000;
+  }
+  
+  input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  .forgot-password {
+    display: block;
+    color: #00aacc;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-decoration: none;
+  }
+  
+  button {
+    background-color: #00bcd4;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .signup-text {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
+  .signup-text a {
+    color: #00aacc;
+    text-decoration: none;
+  }
+  

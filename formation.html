@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Développement Android</title>
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --accent-color: #EA4335;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --text-color: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+        
+        h3 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .content {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .intro-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .advantages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .advantage-card {
+            background-color: var(--light-color);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .advantage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .advantage-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(234, 67, 53, 0.3);
+        }
+        
+        .cta-button:hover {
+            background-color: #d33426;
+            transform: scale(1.05);
+        }
+        
+        .contact-info {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+        
+        .contact-info h4 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .contact-method i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .advantages {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Développement Android</h1>
+            <h2>PAR MR ......</h2>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="content">
+            <p class="intro-text">Vous êtes prêt à faire passer vos compétences au niveau supérieur ?</p>
+            <p>Rejoignez notre formation immersive en développement Android, conçue pour vous offrir une expérience concrète et enrichissante, tout en vous permettant de maîtriser cet outil puissant !</p>
+            
+            <h3>Pourquoi nous choisir ?</h3>
+            
+            <div class="advantages">
+                <div class="advantage-card">
+                    <h4><i class="fas fa-laptop-code"></i> Formation 100% pratique</h4>
+                    <p>Pas de bla-bla, uniquement de la pratique pour vous préparer aux défis réels du marché.</p>
+                </div>
+                
+                <div class="advantage-card">
+                    <h4><i class="fas fa-chalkboard-teacher"></i> Formateur expert</h4>
+                    <p>Apprenez aux côtés d'un spécialiste du domaine avec des années d'expérience.</p>
+                </div>
+                
+                <div class="advantage-card">
+                    <h4><i class="fas fa-briefcase"></i> Opportunité de carrière</h4>
+                    <p>Transformez vos compétences en un atout précieux pour booster votre parcours professionnel.</p>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <a href="paiement.html" class="cta-button">S'inscrire maintenant</a>
+                <p style="margin-top: 20px;">Inscrivez-vous dès aujourd'hui et commencez à maîtriser les techniques de développement pour devenir un véritable expert en développement Android !</p>
+            </div>
+        </div>
+        
+        <div class="contact-info">
+            <h4>Contactez-nous :</h4>
+            
+            <div class="contact-method">
+                <i class="fas fa-link"></i>
+                <div>
+                    <p>Formulaire d'inscription :</p>
+                    <a href="https://docs.google.com/.../1FAIpQLStuhEOszah...viewform..." style="color: var(--secondary-color);">Lien d'inscription</a>
+                </div>
+            </div>
+            
+            <div class="contact-method">
+                <i class="fas fa-phone-alt"></i>
+                <p>GSM/WhatsApp : +216 27 168 785</p>
+            </div>
+            
+            <div class="contact-method">
+                <i class="fas fa-envelope"></i>
+                <p>Email : jampro.school@hotmail.com</p>
+            </div>
+            
+            <div class="contact-method">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Adresse : Rond-point Sobian Allah, Immeuble Mahou Centre, Jedrouan, Tunisia 3100</p>
+            </div>
+        </div>
+        
+        <p style="text-align: center; margin-top: 20px; font-weight: 600;">Ne laissez pas passer cette chance de transformer votre savoir-faire en compétences précieuses</p>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2023 Formation Développement Android. Tous droits réservés.</p>
+    </div>
+</body>
+</html>

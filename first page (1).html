@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jan Pro School</title>
+ <style>
+  /* Reset + Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0073e6;
+  padding: 10px 30px;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logo img {
+  height: 60px;
+}
+
+/* Buttons */
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-buttons button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 20px;
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-buttons button:hover {
+  background-color: #e6b800;
+  transform: scale(1.05);
+}
+
+/* Nav links */
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background-color: #005bb5;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+  background-color: #003f88;
+  transform: translateY(-2px);
+}
+
+/* Search */
+.search-box input {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  width: 200px;
+}
+
+/* Content */
+.content {
+  padding: 50px 30px;
+  max-width: 900px;
+  margin: auto;
+  animation: fadeIn 1s ease forwards;
+}
+
+.welcome {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.welcome span {
+  color: #0073e6;
+}
+
+.content p, .content ul {
+  font-size: 1.1em;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9em;
+  margin-top: 40px;
+  color: #555;
+}
+
+/* Fade-in animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
+.delay-3 { animation-delay: 0.9s; }
+.delay-4 { animation-delay: 1.2s; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .search-box input {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .nav-buttons, .nav-links {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+ </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">
+      <img src="logo.png" alt="Logo de Jan Pro School" height="60">
+    </div>
+
+    <div class="nav-buttons">
+      <button onclick="location.href='second_page.html'">Connexion</button>
+      <button onclick="location.href='second_page.html'">Inscription</button>
+    </div>
+
+    <nav class="nav-links">
+      <a href="courses.html">Accueil</a>
+    </nav>
+
+    <div class="search-box">
+      <input type="text" placeholder="Rechercher sur le site">
+    </div>
+  </header>
+
+  <main class="content">
+    <h2 class="welcome">Bienvenue au <span>Jan Pro School</span></h2>
+
+    <p class="fade-in">
+      Nous sommes un centre de formation dédié à l’excellence et à l’innovation dans l’apprentissage.
+      Notre mission est d’accompagner les professionnels et les étudiants dans leur montée en compétences à travers des formations adaptées aux exigences du marché.
+    </p>
+
+    <ul class="fade-in delay-1">
+      <li>💡 <strong>Nos valeurs :</strong> Qualité, Engagement, Innovation …</li>
+      <li>📚 <strong>Nos formations :</strong> continue, langues, à la carte, workshops …</li>
+      <li>❤️ <strong>Notre objectif :</strong> Vous aider à atteindre vos ambitions professionnelles</li>
+      <li>📍 Kairouan, Rond-point SobhanaAllah</li>
+    </ul>
+
+    <p class="fade-in delay-2">
+      Découvrez nos programmes et rejoignez une communauté dynamique d’apprenants et d’experts.
+    </p>
+
+    <p class="fade-in delay-3">
+      <strong>Contact :</strong> 26 622 010<br>
+      <strong>Page Facebook :</strong> JANPRO School
+    </p>
+  </main>
+
+  <footer class="fade-in delay-4">
+    <p>&copy; 2025 Jan Pro School. Tous droits réservés.</p>
+  </footer>
+
+</body>
+</html>

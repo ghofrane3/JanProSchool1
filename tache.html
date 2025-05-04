@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tâches - Formateur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+            --danger-color: #f72585;
+            --gray-color: #adb5bd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+        }
+
+        .filter-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+
+        .filter-option:hover {
+            background-color: #f0f2f5;
+        }
+
+        .filter-option input {
+            cursor: pointer;
+        }
+
+        .filter-option .color-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .tasks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .tasks-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .tasks-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tasks-view {
+            display: flex;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .view-option {
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            background: white;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .view-option.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .view-option:first-child {
+            border-right: 1px solid #e0e0e0;
+        }
+
+        /* Tasks list */
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .task-card.critical {
+            border-left-color: var(--danger-color);
+        }
+
+        .task-card.high {
+            border-left-color: var(--warning-color);
+        }
+
+        .task-card.medium {
+            border-left-color: var(--accent-color);
+        }
+
+        .task-card.low {
+            border-left-color: var(--success-color);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .task-title {
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-priority {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .task-priority.critical {
+            background-color: var(--danger-color);
+        }
+
+        .task-priority.high {
+            background-color: var(--warning-color);
+        }
+
+        .task-priority.medium {
+            background-color: var(--accent-color);
+        }
+
+        .task-priority.low {
+            background-color: var(--success-color);
+        }
+
+        .task-course {
+            font-size: 12px;
+            color: var(--primary-color);
+            background-color: #e6f0ff;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+
+        .task-due-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            color: var(--gray-color);
+        }
+
+        .task-due-date.overdue {
+            color: var(--danger-color);
+        }
+
+        .task-due-date.today {
+            color: var(--warning-color);
+        }
+
+        .task-description {
+            color: var(--dark-color);
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .task-students {
+            display: flex;
+            align-items: center;
+        }
+
+        .student-avatar {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            margin-right: -8px;
+            border: 2px solid white;
+        }
+
+        .student-avatar.more {
+            background-color: var(--gray-color);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .task-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f2f5;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .task-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .task-btn.primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Task modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--gray-color);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-outline {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn-outline:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        /* Kanban view */
+        .kanban-container {
+            display: none;
+            gap: 15px;
+        }
+
+        .kanban-container.active {
+            display: flex;
+        }
+
+        .kanban-column {
+            flex: 1;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .kanban-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .kanban-count {
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .kanban-tasks {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-color);
+        }
+
+        .empty-state-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .empty-state-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state-description {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-title">Gestion des Tâches</div>
+        <div class="header-actions">
+            <button class="header-btn" id="new-task-btn">
+                <i class="fas fa-plus"></i>
+                Nouvelle Tâche
+            </button>
+        </div>
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-title">Filtres</div>
+            
+            <div class="filter-group">
+                <div class="filter-title">Statut</div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" checked> 
+                        <span>Toutes</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span>À faire</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span>En cours</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span>Terminées</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <div class="filter-title">Priorité</div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" checked> 
+                        <span>Toutes</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span class="color-indicator" style="background-color: var(--danger-color);"></span>
+                        <span>Critique</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span class="color-indicator" style="background-color: var(--warning-color);"></span>
+                        <span>Élevée</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span class="color-indicator" style="background-color: var(--accent-color);"></span>
+                        <span>Moyenne</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span class="color-indicator" style="background-color: var(--success-color);"></span>
+                        <span>Faible</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <div class="filter-title">Cours</div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" checked> 
+                        <span>Tous</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span>Mathématiques</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span>Physique</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span>Informatique</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox"> 
+                        <span>Français</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="main-content">
+            <div class="tasks-header">
+                <div class="tasks-title">Mes Tâches</div>
+                <div class="tasks-actions">
+                    <div class="tasks-view">
+                        <button class="view-option active" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="view-option" data-view="kanban">
+                            <i class="fas fa-columns"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List view -->
+            <div class="tasks-list" id="tasks-list">
+                <!-- Task cards will be added here dynamically -->
+            </div>
+
+            <!-- Kanban view -->
+            <div class="kanban-container" id="kanban-view">
+                <div class="kanban-column">
+                    <div class="kanban-title">
+                        À faire
+                        <span class="kanban-count">3</span>
+                    </div>
+                    <div class="kanban-tasks" id="todo-tasks">
+                        <!-- Tasks will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="kanban-column">
+                    <div class="kanban-title">
+                        En cours
+                        <span class="kanban-count">2</span>
+                    </div>
+                    <div class="kanban-tasks" id="inprogress-tasks">
+                        <!-- Tasks will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="kanban-column">
+                    <div class="kanban-title">
+                        Terminé
+                        <span class="kanban-count">1</span>
+                    </div>
+                    <div class="kanban-tasks" id="done-tasks">
+                        <!-- Tasks will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task modal -->
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Nouvelle Tâche</div>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Titre de la tâche</label>
+                    <input type="text" class="form-control" placeholder="Ex: Corriger les devoirs de mathématiques">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" placeholder="Détails de la tâche..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Cours</label>
+                        <select class="form-control">
+                            <option value="">Sélectionner un cours</option>
+                            <option value="math">Mathématiques</option>
+                            <option value="physics">Physique</option>
+                            <option value="computer">Informatique</option>
+                            <option value="french">Français</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Priorité</label>
+                        <select class="form-control">
+                            <option value="low">Faible</option>
+                            <option value="medium">Moyenne</option>
+                            <option value="high">Élevée</option>
+                            <option value="critical">Critique</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date d'échéance</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Statut</label>
+                        <select class="form-control">
+                            <option value="todo">À faire</option>
+                            <option value="inprogress">En cours</option>
+                            <option value="done">Terminé</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Assigner à</label>
+                    <select class="form-control" multiple>
+                        <option value="student1">Jean Dupont</option>
+                        <option value="student2">Marie Martin</option>
+                        <option value="student3">Pierre Durand</option>
+                        <option value="student4">Sophie Lambert</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-btn">Annuler</button>
+                <button class="btn btn-primary" id="save-btn">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const tasksList = document.getElementById('tasks-list');
+            const kanbanView = document.getElementById('kanban-view');
+            const todoTasks = document.getElementById('todo-tasks');
+            const inprogressTasks = document.getElementById('inprogress-tasks');
+            const doneTasks = document.getElementById('done-tasks');
+            const newTaskBtn = document.getElementById('new-task-btn');
+            const taskModal = document.getElementById('task-modal');
+            const modalClose = document.getElementById('modal-close');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const viewOptions = document.querySelectorAll('.view-option');
+
+            // Sample data
+            const tasks = [
+                {
+                    id: 'task1',
+                    title: 'Corriger les devoirs de mathématiques',
+                    description: 'Corriger les exercices 1 à 5 du chapitre sur les dérivées',
+                    course: 'Mathématiques',
+                    priority: 'high',
+                    dueDate: '2023-06-15',
+                    status: 'todo',
+                    assigned: ['student1', 'student2'],
+                    createdAt: '2023-06-10'
+                },
+                {
+                    id: 'task2',
+                    title: 'Préparer le cours sur les algorithmes',
+                    description: 'Créer les slides et les exercices pour le prochain cours',
+                    course: 'Informatique',
+                    priority: 'critical',
+                    dueDate: '2023-06-12',
+                    status: 'inprogress',
+                    assigned: ['student3'],
+                    createdAt: '2023-06-05'
+                },
+                {
+                    id: 'task3',
+                    title: 'Répondre aux questions des étudiants',
+                    description: 'Les étudiants ont posé des questions sur le dernier devoir',
+                    course: 'Physique',
+                    priority: 'medium',
+                    dueDate: '2023-06-14',
+                    status: 'todo',
+                    assigned: ['student4', 'student5'],
+                    createdAt: '2023-06-08'
+                },
+                {
+                    id: 'task4',
+                    title: 'Envoyer les notes du contrôle',
+                    description: 'Calculer et envoyer les notes du dernier contrôle',
+                    course: 'Français',
+                    priority: 'low',
+                    dueDate: '2023-06-10',
+                    status: 'done',
+                    assigned: [],
+                    createdAt: '2023-06-01'
+                },
+                {
+                    id: 'task5',
+                    title: 'Planifier la séance de révision',
+                    description: 'Organiser une séance de révision avant l\'examen final',
+                    course: 'Mathématiques',
+                    priority: 'high',
+                    dueDate: '2023-06-18',
+                    status: 'inprogress',
+                    assigned: ['student2', 'student3'],
+                    createdAt: '2023-06-09'
+                },
+                {
+                    id: 'task6',
+                    title: 'Mettre à jour les ressources en ligne',
+                    description: 'Ajouter les nouvelles ressources sur la plateforme',
+                    course: 'Informatique',
+                    priority: 'medium',
+                    dueDate: '2023-06-20',
+                    status: 'todo',
+                    assigned: ['student1'],
+                    createdAt: '2023-06-11'
+                }
+            ];
+
+            const students = [
+                { id: 'student1', name: 'Jean Dupont', avatar: 'JD' },
+                { id: 'student2', name: 'Marie Martin', avatar: 'MM' },
+                { id: 'student3', name: 'Pierre Durand', avatar: 'PD' },
+                { id: 'student4', name: 'Sophie Lambert', avatar: 'SL' },
+                { id: 'student5', name: 'Thomas Moreau', avatar: 'TM' }
+            ];
+
+            // Initialize the app
+            renderTasks();
+
+            // Render tasks in list view
+            function renderTasks() {
+                tasksList.innerHTML = '';
+                todoTasks.innerHTML = '';
+                inprogressTasks.innerHTML = '';
+                doneTasks.innerHTML = '';
+                
+                let todoCount = 0;
+                let inprogressCount = 0;
+                let doneCount = 0;
+                
+                tasks.forEach(task => {
+                    const dueDate = new Date(task.dueDate);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    let dueDateClass = '';
+                    if (dueDate < today && task.status !== 'done') {
+                        dueDateClass = 'overdue';
+                    } else if (dueDate.toDateString() === today.toDateString()) {
+                        dueDateClass = 'today';
+                    }
+                    
+                    const dueDateFormatted = dueDate.toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'short'
+                    });
+                    
+                    const assignedStudents = students.filter(student => 
+                        task.assigned.includes(student.id)
+                    );
+                    
+                    const taskElement = document.createElement('div');
+                    taskElement.className = `task-card ${task.priority}`;
+                    taskElement.dataset.id = task.id;
+                    taskElement.draggable = true;
+                    
+                    taskElement.innerHTML = `
+                        <div class="task-header">
+                            <div class="task-title">
+                                ${task.title}
+                                <span class="task-course">${task.course}</span>
+                            </div>
+                            <span class="task-priority ${task.priority}">
+                                ${task.priority === 'critical' ? 'Critique' : 
+                                  task.priority === 'high' ? 'Élevée' : 
+                                  task.priority === 'medium' ? 'Moyenne' : 'Faible'}
+                            </span>
+                        </div>
+                        <div class="task-description">${task.description}</div>
+                        <div class="task-footer">
+                            <div>
+                                <div class="task-due-date ${dueDateClass}">
+                                    <i class="far fa-calendar-alt"></i>
+                                    ${dueDateFormatted}
+                                </div>
+                            </div>
+                            <div class="task-students">
+                                ${assignedStudents.slice(0, 3).map(student => `
+                                    <div class="student-avatar" title="${student.name}">${student.avatar}</div>
+                                `).join('')}
+                                ${assignedStudents.length > 3 ? `
+                                    <div class="student-avatar more" title="+${assignedStudents.length - 3} autres">+${assignedStudents.length - 3}</div>
+                                ` : ''}
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-btn" title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-btn primary" title="Marquer comme terminé">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add to list view
+                    tasksList.appendChild(taskElement.cloneNode(true));
+                    
+                    // Add to kanban view
+                    if (task.status === 'todo') {
+                        todoTasks.appendChild(taskElement);
+                        todoCount++;
+                    } else if (task.status === 'inprogress') {
+                        inprogressTasks.appendChild(taskElement);
+                        inprogressCount++;
+                    } else if (task.status === 'done') {
+                        doneTasks.appendChild(taskElement);
+                        doneCount++;
+                    }
+                });
+                
+                // Update kanban counts
+                document.querySelector('#kanban-view .kanban-column:nth-child(1) .kanban-count').textContent = todoCount;
+                document.querySelector('#kanban-view .kanban-column:nth-child(2) .kanban-count').textContent = inprogressCount;
+                document.querySelector('#kanban-view .kanban-column:nth-child(3) .kanban-count').textContent = doneCount;
+                
+                // Show empty state if no tasks
+                if (tasks.length === 0) {
+                    tasksList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="far fa-check-circle"></i>
+                            </div>
+                            <div class="empty-state-title">Aucune tâche trouvée</div>
+                            <div class="empty-state-description">Créez votre première tâche en cliquant sur le bouton "Nouvelle Tâche"</div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Event listeners
+            newTaskBtn.addEventListener('click', () => {
+                taskModal.classList.add('active');
+            });
+
+            modalClose.addEventListener('click', () => {
+                taskModal.classList.remove('active');
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                taskModal.classList.remove('active');
+            });
+
+            saveBtn.addEventListener('click', () => {
+                // In a real app, save the task to the database
+                taskModal.classList.remove('active');
+                // Then refresh the tasks list
+                renderTasks();
+            });
+
+            viewOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    viewOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                    
+                    if (option.dataset.view === 'list') {
+                        tasksList.style.display = 'flex';
+                        kanbanView.classList.remove('active');
+                    } else {
+                        tasksList.style.display = 'none';
+                        kanbanView.classList.add('active');
+                    }
+                });
+            });
+
+            // Drag and drop for kanban view
+            kanbanView.addEventListener('dragstart', (e) => {
+                if (e.target.classList.contains('task-card')) {
+                    e.target.classList.add('dragging');
+                    e.dataTransfer.setData('text/plain', e.target.dataset.id);
+                }
+            });
+
+            kanbanView.addEventListener('dragend', (e) => {
+                if (e.target.classList.contains('task-card')) {
+                    e.target.classList.remove('dragging');
+                }
+            });
+
+            kanbanView.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const draggingTask = document.querySelector('.dragging');
+                const afterElement = getDragAfterElement(e.target.closest('.kanban-tasks'), e.clientY);
+                const kanbanTasks = e.target.closest('.kanban-tasks');
+                
+                if (kanbanTasks && draggingTask) {
+                    if (afterElement) {
+                        kanbanTasks.insertBefore(draggingTask, afterElement);
+                    } else {
+                        kanbanTasks.appendChild(draggingTask);
+                    }
+                }
+            });
+
+            kanbanView.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const taskId = e.dataTransfer.getData('text/plain');
+                const task = tasks.find(t => t.id === taskId);
+                const newStatus = e.target.closest('.kanban-column')?.querySelector('.kanban-title')?.textContent.trim();
+                
+                if (task && newStatus) {
+                    if (newStatus === 'À faire') {
+                        task.status = 'todo';
+                    } else if (newStatus === 'En cours') {
+                        task.status = 'inprogress';
+                    } else if (newStatus === 'Terminé') {
+                        task.status = 'done';
+                    }
+                    
+                    // In a real app, update the task status in the database
+                    renderTasks();
+                }
+            });
+
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.task-card:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+        });
+    </script>
+</body>
+</html>

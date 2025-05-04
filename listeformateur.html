@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annuaire des Formateurs | Expertises</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --card-bg: #ffffff;
+            --body-bg: #f5f7fa;
+            --text-color: #2b2d42;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #3a86ff;
+            --primary-light: #4cc9f0;
+            --secondary: #8338ec;
+            --dark: #121212;
+            --light: #1e1e1e;
+            --gray: #adb5bd;
+            --card-bg: #2d2d2d;
+            --body-bg: #121212;
+            --text-color: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+            color: var(--text-color);
+        }
+
+        .theme-toggle i {
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border-radius: 50px;
+            border: none;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            box-shadow: var(--shadow);
+            font-size: 0.95rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+            color: var(--text-color);
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .formateurs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .formateur-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .formateur-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--light);
+            border: 4px solid var(--card-bg);
+            position: absolute;
+            bottom: -40px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 2.5rem 1.5rem 1.5rem;
+            text-align: center;
+        }
+
+        .formateur-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .formateur-title {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .specialites {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .specialite-tag {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .specialite-tag:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(108, 117, 125, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: all 0.2s ease;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .formateur-card {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .formateur-card:nth-child(1) { animation-delay: 0.1s; }
+        .formateur-card:nth-child(2) { animation-delay: 0.2s; }
+        .formateur-card:nth-child(3) { animation-delay: 0.3s; }
+        .formateur-card:nth-child(4) { animation-delay: 0.4s; }
+        .formateur-card:nth-child(5) { animation-delay: 0.5s; }
+        .formateur-card:nth-child(6) { animation-delay: 0.6s; }
+        .formateur-card:nth-child(7) { animation-delay: 0.7s; }
+        .formateur-card:nth-child(8) { animation-delay: 0.8s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Annuaire des Formateurs</h1>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Mode Sombre</span>
+            </button>
+        </header>
+
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Rechercher un formateur...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Tous</button>
+                <button class="filter-btn" data-filter="dev">Développement</button>
+                <button class="filter-btn" data-filter="design">Design</button>
+                <button class="filter-btn" data-filter="data">Data</button>
+                <button class="filter-btn" data-filter="marketing">Marketing</button>
+            </div>
+        </div>
+
+        <div class="formateurs-grid" id="formateursGrid">
+            <!-- Formateur 1 -->
+            <div class="formateur-card" data-categories="dev">
+                <div class="card-header">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Hechim ghabi">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="formateur-name">Hechim ghabi</h3>
+                    <p class="formateur-title">Expert Frontend</p>
+                    <div class="specialites">
+                        <span class="specialite-tag">React</span>
+                        <span class="specialite-tag">TypeScript</span>
+                        <span class="specialite-tag">CSS Avancé</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formateur 2 -->
+            <div class="formateur-card" data-categories="data">
+                <div class="card-header">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sihem Dridi">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="formateur-name">Sihem Dridi</h3>
+                    <p class="formateur-title">Data Scientist</p>
+                    <div class="specialites">
+                        <span class="specialite-tag">Python</span>
+                        <span class="specialite-tag">Machine Learning</span>
+                        <span class="specialite-tag">Big Data</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formateur 3 -->
+            <div class="formateur-card" data-categories="dev">
+                <div class="card-header">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Ahmed ben ali">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="formateur-name">Ahmed ben ali</h3>
+                    <p class="formateur-title">Architecte Logiciel</p>
+                    <div class="specialites">
+                        <span class="specialite-tag">Java</span>
+                        <span class="specialite-tag">Microservices</span>
+                        <span class="specialite-tag">Cloud</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formateur 4 -->
+            <div class="formateur-card" data-categories="design">
+                <div class="card-header">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Senda najjar">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="formateur-name">Senda najjar</h3>
+                    <p class="formateur-title">Designer UX/UI</p>
+                    <div class="specialites">
+                        <span class="specialite-tag">Figma</span>
+                        <span class="specialite-tag">Prototypage</span>
+                        <span class="specialite-tag">Research</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formateur 5 -->
+            <div class="formateur-card" data-categories="marketing">
+                <div class="card-header">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/men/12.jpg" alt="Khalid Balti">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="formateur-name">Khalid Balti</h3>
+                    <p class="formateur-title">Expert Digital</p>
+                    <div class="specialites">
+                        <span class="specialite-tag">SEO</span>
+                        <span class="specialite-tag">Growth</span>
+                        <span class="specialite-tag">Analytics</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formateur 6 -->
+            <div class="formateur-card" data-categories="dev,data">
+                <div class="card-header">
+                    <div class="avatar">
+                        <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Aicha outay">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="formateur-name">Aicha outay</h3>
+                    <p class="formateur-title">Full Stack</p>
+                    <div class="specialites">
+                        <span class="specialite-tag">Node.js</span>
+                        <span class="specialite-tag">SQL</span>
+                        <span class="specialite-tag">Data Viz</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark/Light mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        let isDarkMode = false;
+
+        // Check for saved theme preference or use preferred color scheme
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            enableDarkMode();
+        }
+
+        themeToggle.addEventListener('click', () => {
+            isDarkMode ? disableDarkMode() : enableDarkMode();
+        });
+
+        function enableDarkMode() {
+            body.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Mode Clair</span>';
+            isDarkMode = true;
+            localStorage.setItem('theme', 'dark');
+        }
+
+        function disableDarkMode() {
+            body.removeAttribute('data-theme');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Mode Sombre</span>';
+            isDarkMode = false;
+            localStorage.setItem('theme', 'light');
+        }
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const formateurCards = document.querySelectorAll('.formateur-card');
+        const searchInput = document.getElementById('searchInput');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filterValue = button.dataset.filter;
+                filterFormateurs(filterValue);
+            });
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            
+            filterFormateurs(activeFilter, searchTerm);
+        });
+
+        function filterFormateurs(filter, searchTerm = '') {
+            let hasVisibleCards = false;
+
+            formateurCards.forEach(card => {
+                const categories = card.dataset.categories;
+                const name = card.querySelector('.formateur-name').textContent.toLowerCase();
+                const specialites = card.querySelector('.specialites').textContent.toLowerCase();
+
+                const matchesFilter = filter === 'all' || categories.includes(filter);
+                const matchesSearch = searchTerm === '' || 
+                                     name.includes(searchTerm) || 
+                                     specialites.includes(searchTerm);
+
+                if (matchesFilter && matchesSearch) {
+                    card.style.display = 'block';
+                    hasVisibleCards = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show empty state if no cards match
+            const emptyState = document.getElementById('emptyState');
+            if (!hasVisibleCards) {
+                if (!emptyState) {
+                    createEmptyState();
+                }
+            } else if (emptyState) {
+                emptyState.remove();
+            }
+        }
+
+        function createEmptyState() {
+            const grid = document.getElementById('formateursGrid');
+            const emptyState = document.createElement('div');
+            emptyState.className = 'empty-state';
+            emptyState.id = 'emptyState';
+            emptyState.innerHTML = `
+                <i class="fas fa-user-slash"></i>
+                <h3>Aucun formateur trouvé</h3>
+                <p>Essayez de modifier vos critères de recherche</p>
+            `;
+            grid.appendChild(emptyState);
+        }
+    </script>
+</body>
+</html>
